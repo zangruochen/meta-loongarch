@@ -7,7 +7,7 @@ TUNE_PKGARCH = "${LOONGARCHPKGSFX_VARIANT:tune-loongarch64}"
 
 # Endianess
 TUNEVALID[littleendian] = "Enable little-endian mode"
-TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'littleendian', ' -mel', ' -meb', d)}"
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'littleendian', ' ', ' ', d)}"
 
 # Base tunes
 AVAILTUNES += "loongarch64"

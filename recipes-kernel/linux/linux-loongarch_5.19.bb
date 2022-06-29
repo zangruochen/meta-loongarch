@@ -3,9 +3,11 @@ SECTION = "kernel"
 LICENSE = "GPL-2.0-only"
 HOMEPAGE = "https://www.yoctoproject.org/"
 
-SRCREV_machine:qemuloongarch64 ?= "a111daf0c53ae91e71fd2bfe7497862d14132e3e"
+BRANCH = "loongarch-next"
 
-SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;name=machine"
+SRCREV_machine:qemuloongarch64 ?= "78c36a0c87b9d55a3289c44ab691e7940619fcc1"
+
+SRC_URI = "git://github.com/loongson/linux.git;name=machine;branch=${BRANCH};protocol=git"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 LINUX_VERSION ?= "5.19"

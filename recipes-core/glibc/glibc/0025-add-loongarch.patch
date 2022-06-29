@@ -1,0 +1,24 @@
+From 7159d50dadd380c6013b65ffe241a337208453b0 Mon Sep 17 00:00:00 2001
+From: Zang Ruochen <zangruochen@loongson.cn>
+Date: Tue, 28 Jun 2022 09:47:20 +0000
+Subject: [PATCH] add loongarch
+
+---
+ scripts/config.sub | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/config.sub b/scripts/config.sub
+index a8f3f7e7cd..4359a4cdd8 100755
+--- a/scripts/config.sub
++++ b/scripts/config.sub
+@@ -1187,6 +1187,7 @@ case $cpu-$vendor in
+ 			| m6811 | m68hc11 | m6812 | m68hc12 | m68hcs12x | nvptx | picochip \
+ 			| m88110 | m88k | maxq | mb | mcore | mep | metag \
+ 			| microblaze | microblazeel \
++			| loongarch64 | loongarchx32 | loongarch32 \
+ 			| mips | mipsbe | mipseb | mipsel | mipsle \
+ 			| mips16 \
+ 			| mips64 | mips64el \
+-- 
+2.34.1
+

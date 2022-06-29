@@ -23,10 +23,9 @@ This layer depends on:
 
 ## Quick Start
 
-1. source poky/oe-init-build-env build-LA
-2. Add this layer to bblayers.conf and the dependencies above
-3. Set MACHINE in local.conf to one of the supported boards
-4. bitbake core-image-base
+1. Apply patch Add-loongarch-support.patch in poky
+2. source poky/oe-init-build-env build-LA
+3. Add this layer to bblayers.conf and the dependencies above
 
 ## Maintainers
 

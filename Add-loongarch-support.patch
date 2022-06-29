@@ -1,0 +1,102 @@
+From 7380c3d60d563395038fd9e2de8e0da44d0d6e57 Mon Sep 17 00:00:00 2001
+From: Zang Ruochen <zangruochen@loongson.cn>
+Date: Wed, 29 Jun 2022 02:32:39 +0000
+Subject: [PATCH] Add loongarch support
+
+---
+ meta-poky/conf/local.conf.sample            | 2 +-
+ meta/classes/kernel-arch.bbclass            | 1 +
+ meta/classes/siteinfo.bbclass               | 2 ++
+ meta/conf/distro/include/tcmode-default.inc | 8 ++++----
+ meta/lib/oe/elf.py                          | 2 ++
+ 5 files changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/meta-poky/conf/local.conf.sample b/meta-poky/conf/local.conf.sample
+index 493227470b..ef7b5f6502 100644
+--- a/meta-poky/conf/local.conf.sample
++++ b/meta-poky/conf/local.conf.sample
+@@ -35,7 +35,7 @@
+ #MACHINE ?= "edgerouter"
+ #
+ # This sets the default machine to be qemux86-64 if no other machine is selected:
+-MACHINE ??= "qemux86-64"
++MACHINE ??= "qemuloongarch64"
+ 
+ #
+ # Where to place downloads
+diff --git a/meta/classes/kernel-arch.bbclass b/meta/classes/kernel-arch.bbclass
+index 07ec242e63..ba38952972 100644
+--- a/meta/classes/kernel-arch.bbclass
++++ b/meta/classes/kernel-arch.bbclass
+@@ -29,6 +29,7 @@ def map_kernel_arch(a, d):
+     elif re.match('aarch64_ilp32$', a):         return 'arm64'
+     elif re.match('aarch64_be_ilp32$', a):      return 'arm64'
+     elif re.match('mips(isa|)(32|64|)(r6|)(el|)$', a):      return 'mips'
++    elif re.match('loongarch64$', a):      return 'loongarch64'
+     elif re.match('mcf', a):                    return 'm68k'
+     elif re.match('riscv(32|64|)(eb|)$', a):    return 'riscv'
+     elif re.match('p(pc|owerpc)(|64)', a):      return 'powerpc'
+diff --git a/meta/classes/siteinfo.bbclass b/meta/classes/siteinfo.bbclass
+index 3555d5a663..08a84b0ff2 100644
+--- a/meta/classes/siteinfo.bbclass
++++ b/meta/classes/siteinfo.bbclass
+@@ -44,6 +44,7 @@ def siteinfo_data_for_machine(arch, os, d):
+         "mipsel": "endian-little bit-32 mips-common",
+         "mipsisa32r6": "endian-big bit-32 mips-common",
+         "mipsisa32r6el": "endian-little bit-32 mips-common",
++        "loongarch64": "endian-little bit-64 loongarch-common",
+         "powerpc": "endian-big bit-32 powerpc-common",
+         "powerpcle": "endian-little bit-32 powerpc-common",
+         "nios2": "endian-little bit-32 nios2-common",
+@@ -101,6 +102,7 @@ def siteinfo_data_for_machine(arch, os, d):
+         "mips64el-linux-gnun32": "mipsel-linux bit-32",
+         "mipsisa64r6-linux-gnun32": "mipsisa32r6-linux bit-32",
+         "mipsisa64r6el-linux-gnun32": "mipsisa32r6el-linux bit-32",
++        "loongarch64-linux": "loongarch64-linux",
+         "powerpc-linux": "powerpc32-linux powerpc32-linux-glibc",
+         "powerpc-linux-musl": "powerpc-linux powerpc32-linux powerpc32-linux-musl",
+         "powerpcle-linux": "powerpc32-linux powerpc32-linux-glibc",
+diff --git a/meta/conf/distro/include/tcmode-default.inc b/meta/conf/distro/include/tcmode-default.inc
+index eb2f01b967..4c5a12455d 100644
+--- a/meta/conf/distro/include/tcmode-default.inc
++++ b/meta/conf/distro/include/tcmode-default.inc
+@@ -16,12 +16,12 @@ PREFERRED_PROVIDER_virtual/${SDK_PREFIX}compilerlibs = "nativesdk-gcc-runtime"
+ # Default libc config
+ PREFERRED_PROVIDER_virtual/gettext ??= "gettext"
+ 
+-GCCVERSION ?= "12.%"
++GCCVERSION ?= "12.0%"
+ SDKGCCVERSION ?= "${GCCVERSION}"
+-BINUVERSION ?= "2.38%"
++BINUVERSION ?= "2.37%"
+ GDBVERSION ?= "12.%"
+-GLIBCVERSION ?= "2.35"
+-LINUXLIBCVERSION ?= "5.16%"
++GLIBCVERSION ?= "2.34"
++LINUXLIBCVERSION ?= "5.19%"
+ QEMUVERSION ?= "7.0%"
+ GOVERSION ?= "1.18%"
+ # This can not use wildcards like 8.0.% since it is also used in mesa to denote
+diff --git a/meta/lib/oe/elf.py b/meta/lib/oe/elf.py
+index 46c884a775..b258e4cb6a 100644
+--- a/meta/lib/oe/elf.py
++++ b/meta/lib/oe/elf.py
+@@ -21,6 +21,7 @@ def machine_dict(d):
+                         "lm32":       (138,    0,    0,          False,         32),
+                         "mips":       ( 8,     0,    0,          False,         32),
+                         "mipsel":     ( 8,     0,    0,          True,          32),
++                        "loongarch64": (258,    0,    0,          True,          64),
+                         "microblaze":  (189,   0,    0,          False,         32),
+                         "microblazeel":(189,   0,    0,          True,          32),
+                         "powerpc":    (20,     0,    0,          False,         32),
+@@ -48,6 +49,7 @@ def machine_dict(d):
+                         "mipsel":     ( 8,     0,    0,          True,          32),
+                         "mips64":     ( 8,     0,    0,          False,         64),
+                         "mips64el":   ( 8,     0,    0,          True,          64),
++                        "loongarch64":   (258, 0,    0,          True,          64),
+                         "mipsisa32r6":   ( 8,  0,    0,          False,         32),
+                         "mipsisa32r6el": ( 8,  0,    0,          True,          32),
+                         "mipsisa64r6":   ( 8,  0,    0,          False,         64),
+-- 
+2.34.1
+
