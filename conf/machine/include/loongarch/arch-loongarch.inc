@@ -14,5 +14,5 @@ AVAILTUNES += "loongarch64"
 
 TUNE_FEATURES:tune-loongarch64 = " littleendian"
 BASE_LIB:tune-loongarch64 = "lib64"
-LOONGARCHPKGSFX_VARIANT:tune-loongarch64 = "${TUNE_ARCH}"
+LOONGARCHPKGSFX_VARIANT:tune-loongarch64 = "loongarch64"
 PACKAGE_EXTRA_ARCHS:tune-loongarch64 = "loongarch64"
